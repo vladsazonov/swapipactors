@@ -70,17 +70,10 @@ export const SearchField = observer(() => {
     const [value, setValue] = React.useState(null);
 
     const findCharacter = () => {
-        return fetch('https://swapi.co/api/people/?search=' + value.name)
-            .then(resp => {
-                return resp.json();
-            })
-            .then(resp => {
-                return resp.results
-            })
-            .then(resp => {
-                saveActorData(resp.find(elem => elem.name === value.name));
-                history.push("/actor/" + value.name)
-            })
+        console.log(value.name)
+        saveActorData(value);
+        history.push("/actor/" + value.name)
+
     };
 
     const findCharacterFromHistory = Name => event => {

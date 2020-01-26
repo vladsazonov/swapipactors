@@ -1,7 +1,7 @@
 import axios from "axios"
 import {observable} from "mobx"
 
-export let searchHistory = observable(JSON.parse(sessionStorage.getItem('historyCharacters')) || []);
+export let searchHistory = JSON.parse(sessionStorage.getItem('historyCharacters')) || [];
 export let allCharacters = observable(JSON.parse(sessionStorage.getItem('allCharacters')) || []);
 
 export function getAllPeople() {
@@ -28,7 +28,9 @@ export function getAllPeople() {
 }
 
 export const saveActorData = (Data) => {
-    if (searchHistory.map(elem => elem.name !== Data.name)) {
+    let sameCharacter = searchHistory.find(elem => elem.name === Data.name);
+    console.log('asdasd ', sameCharacter);
+    if (!sameCharacter) {
         console.log('data', Data);
         console.log('searchHistory', searchHistory);
         searchHistory.push(Data);
