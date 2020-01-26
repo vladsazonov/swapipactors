@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect} from 'react';
 import './App.css';
+import {SearchField} from "./components/SearchField";
+import {ActorCard} from "./components/ActorCard";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+
+function ScreenSwitcher() {
+    return (
+        <div className="App">
+            <Switch>
+                <Route exact path="/">
+                    <SearchField/>
+                </Route>
+                <Route path="/actor/:actor_name"
+                       render={(routeProps) =>
+                           <ActorCard {...routeProps}/>}
+                />
+            </Switch>
+        </div>
+    )
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    useEffect(() => {
+        if (sessionStorage.historyCharacters === undefined) {
+            sessionStorage.setItem('historyCharacters', '[]');
+            if (sessionStorage.allCharacters === undefined) {
+                sessionStorage.setItem('allCharacters', '[]');
+            }
+        }
+    });
+
+    return (
+        <Router>
+            <ScreenSwitcher/>
+        </Router>
+    );
 }
 
 export default App;
