@@ -79,18 +79,15 @@ export const ActorCard = props => {
                         </div>
                         <div className={classes.characteristic}>
                             <Typography variant="h5" className={classes.characteristicHeader}>Hair color </Typography>
-                            <Typography variant="h6"
-                                        className={classes.characteristicValue}>{elem.hair_color}</Typography>
+                            <Typography variant="h6" className={classes.characteristicValue}>{elem.hair_color}</Typography>
                         </div>
                         <div className={classes.characteristic}>
                             <Typography variant="h5" className={classes.characteristicHeader}>Skin color </Typography>
-                            <Typography variant="h6"
-                                        className={classes.characteristicValue}>{elem.skin_color}</Typography>
+                            <Typography variant="h6" className={classes.characteristicValue}>{elem.skin_color}</Typography>
                         </div>
                         <div className={classes.characteristic}>
                             <Typography variant="h5" className={classes.characteristicHeader}>Eye color </Typography>
-                            <Typography variant="h6"
-                                        className={classes.characteristicValue}>{elem.eye_color}</Typography>
+                            <Typography variant="h6" className={classes.characteristicValue}>{elem.eye_color}</Typography>
                         </div>
                         <div className={classes.characteristic}>
                             <Typography variant="h5" className={classes.characteristicHeader}>Birth year </Typography>
@@ -103,8 +100,7 @@ export const ActorCard = props => {
                         </div>
                         <div className={classes.characteristic}>
                             <Typography variant="h5" className={classes.characteristicHeader}>Skin color</Typography>
-                            <Typography variant="h6"
-                                        className={classes.characteristicValue}>{elem.skin_color}</Typography>
+                            <Typography variant="h6" className={classes.characteristicValue}>{elem.skin_color}</Typography>
                         </div>
                     </div>
                 )

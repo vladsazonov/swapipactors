@@ -88,12 +88,10 @@ export const SearchField = observer(() => {
     };
 
     useEffect(() => {
-        console.log(allCharacters.length);
         const abortController = new AbortController();
         const signal = abortController.signal;
         if (allCharacters.length === 0) {
             (async () => {
-                console.log(allCharacters);
                 characters = await getAllPeople();
                 if (characters.length > 0) {
                     setIsLoading(false);
