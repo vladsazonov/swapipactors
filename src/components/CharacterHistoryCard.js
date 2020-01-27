@@ -10,9 +10,7 @@ const useStyles = makeStyles({
         padding: 5,
         cursor: 'pointer'
     },
-
 });
-
 
 export const CharacterHistoryCard = (props) => {
     const classes = useStyles();
@@ -24,4 +22,4 @@ export const CharacterHistoryCard = (props) => {
             </div>
         </>
     )
-}
+};

@@ -1,15 +1,14 @@
 import axios from "axios"
-import {observable} from "mobx"
 
 export let searchHistory = JSON.parse(sessionStorage.getItem('historyCharacters')) || [];
-export let allCharacters = observable(JSON.parse(sessionStorage.getItem('allCharacters')) || []);
+export let allCharacters = JSON.parse(sessionStorage.getItem('allCharacters')) || [];
 
 export function getAllPeople() {
     let characters = [];
     return axios('https://swapi.co/api/people/')
-        .then(response => {
-            characters = response.data.results;
-            return response.data.count;
+        .then(resp => {
+            characters = resp.data.results;
+            return resp.data.count;
         })
         .then(count => {
             const remainingPages = Math.ceil((count - 1) / 10);
@@ -19,22 +18,17 @@ export function getAllPeople() {
             }
             return Promise.all(promises);
         })
-        .then(response => {
-            characters = response.reduce((acc, data) => [...acc, ...data.data.results], characters);
-            sessionStorage.setItem('allCharacters', JSON.stringify(characters));
-            return characters;
+        .then(resp => {
+            sessionStorage.setItem('allCharacters', JSON.stringify(resp.reduce((acc, data) => [...acc, ...data.data.results], characters)));
+            return allCharacters = JSON.parse(sessionStorage.getItem('allCharacters'));
         })
         .catch(error => console.log("Error ", error));
 }
 
-export const saveActorData = (Data) => {
-    let sameCharacter = searchHistory.find(elem => elem.name === Data.name);
-    console.log('asdasd ', sameCharacter);
+export const saveCharacterData = (characterData) => {
+    let sameCharacter = searchHistory.find(elem => elem.name === characterData.name);
     if (!sameCharacter) {
-        console.log('data', Data);
-        console.log('searchHistory', searchHistory);
-        searchHistory.push(Data);
+        searchHistory.push(characterData);
         sessionStorage.setItem('historyCharacters', JSON.stringify(searchHistory));
     }
-
 };

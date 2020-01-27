@@ -39,11 +39,9 @@ export const ActorCard = props => {
     const [isLoad, setIsLoad] = useState(true);
     const history = useHistory();
 
-    const closeActorCard = () => {
-        history.push("/")
-    };
-
     useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
         (async () => {
             fetch('https://swapi.co/api/people/?search=' + props.match.params.actor_name)
                 .then(resp => {
@@ -51,11 +49,13 @@ export const ActorCard = props => {
                 })
                 .then(resp => {
                     foundActor = resp.results;
-                    setIsLoad(false)
+                    setIsLoad(false);
                 })
         })();
 
-
+        return function cleanup() {
+            abortController.abort();
+        };
     }, [isLoad, props.match.params.actor_name]);
 
     const actorCardView = () => {
@@ -63,13 +63,11 @@ export const ActorCard = props => {
             foundActor.map(elem => {
                 return (
                     <div key={elem.name} className={classes.actorCard}>
-
                         <div className={classes.characteristic}>
                             <Typography variant="h3" className={classes.actorName}>{elem.name}</Typography>
-                            <IconButton style={{marginLeft: 'auto'}} onClick={closeActorCard}>
+                            <IconButton style={{marginLeft: 'auto'}} onClick={() => history.push("/")}>
                                 <Close/>
                             </IconButton>
-
                         </div>
                         <div className={classes.characteristic}>
                             <Typography variant="h5" className={classes.characteristicHeader}>Height </Typography>
@@ -117,14 +115,13 @@ export const ActorCard = props => {
     return (
         <>
             {
-                isLoad ? (
+                !isLoad ? actorCardView() : (
                     <Loader
                         type="Triangle"
                         color="#fff"
                         height={100}
-                        width={100}
-                    />
-                ) : actorCardView()
+                        width={100}/>
+                )
             }
         </>
     )

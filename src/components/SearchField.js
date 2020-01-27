@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {getAllPeople, saveActorData, searchHistory, allCharacters} from "../service"
+import {getAllPeople, saveCharacterData, searchHistory, allCharacters} from "../service"
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {useHistory} from "react-router-dom";
@@ -70,10 +70,8 @@ export const SearchField = observer(() => {
     const [value, setValue] = React.useState(null);
 
     const findCharacter = () => {
-        console.log(value.name)
-        saveActorData(value);
-        history.push("/actor/" + value.name)
-
+        saveCharacterData(value);
+        history.push("/actor/" + value.name);
     };
 
     const findCharacterFromHistory = Name => event => {
@@ -90,17 +88,24 @@ export const SearchField = observer(() => {
     };
 
     useEffect(() => {
-        (async () => {
-            if (allCharacters.length === 0) {
+        console.log(allCharacters.length);
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        if (allCharacters.length === 0) {
+            (async () => {
+                console.log(allCharacters);
                 characters = await getAllPeople();
                 if (characters.length > 0) {
                     setIsLoading(false);
                 }
-            } else {
-                characters = allCharacters;
-                setIsLoading(false);
-            }
-        })();
+            })();
+        } else {
+            characters = allCharacters;
+            setIsLoading(false);
+        }
+        return function cleanup() {
+            abortController.abort();
+        };
     }, [isLoading]);
 
     const searchFieldView = () => {
@@ -140,7 +145,7 @@ export const SearchField = observer(() => {
                     {
                         searchHistory.map(elem => {
                             return (
-                                <CharacterHistoryCard name={elem.name}
+                                <CharacterHistoryCard key={elem.name} name={elem.name}
                                                       findCharacterFromHistory={findCharacterFromHistory}/>
                             )
                         })
@@ -153,16 +158,14 @@ export const SearchField = observer(() => {
     return (
         <>
             {
-                !isLoading ? searchFieldView() : (
+                !isLoading ? (searchFieldView()) : (
                     <Loader
                         type="Triangle"
                         color="#fff"
                         height={100}
-                        width={100}
-                    />
+                        width={100}/>
                 )
             }
         </>
     )
-
 });
