@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {getAllPeople, saveCharacterData, searchHistory, allCharacters} from "../service"
+import {getAllPeople, saveCharacterData, searchHistory, allCharacters} from "../service";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {useHistory} from "react-router-dom";
-import Logo from "../images/logo.svg"
+import Logo from "../images/logo.svg";
 import Search from "@material-ui/icons/Search"
 import IconButton from '@material-ui/core/IconButton';
-import {CharacterHistoryCard} from "./CharacterHistoryCard"
+import {CharacterHistoryCard} from "./CharacterHistoryCard";
 import {observer} from "mobx-react-lite";
 import Loader from 'react-loader-spinner';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -77,23 +77,21 @@ export const SearchField = observer(() => {
     const findCharacterFromHistory = Name => event => {
         return fetch('https://swapi.co/api/people/?search=' + Name)
             .then(resp => {
-                return resp.json();
+                return resp.json()
             })
             .then(resp => {
                 return resp.results
             })
             .then(() => {
-                history.push("/actor/" + Name)
+                history.push("/actor/" + Name);
             })
     };
 
     useEffect(() => {
-        console.log(allCharacters.length);
         const abortController = new AbortController();
         const signal = abortController.signal;
         if (allCharacters.length === 0) {
             (async () => {
-                console.log(allCharacters);
                 characters = await getAllPeople();
                 if (characters.length > 0) {
                     setIsLoading(false);
